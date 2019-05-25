@@ -1,0 +1,33 @@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Accounting CRM</title>
+</head>
+<body>
+
+    <div>
+        <h1>Добрый день!</h1>
+        @if(User.Identity.IsAuthenticated)
+        {
+            <p>
+                Добро пожаловать в систему, @User.Identity.Name
+                @Html.ActionLink("К задачам", "Index", "Work")
+                @Html.ActionLink("Выйти", "LogOff", "Auth")
+            </p>
+        }
+        else
+        {
+            <p>
+                Для того, чтобы приступить к работе, Вам нужно <br>
+                @Html.ActionLink("Зарегестрироваться", "Register", "Auth") или @Html.ActionLink("Войти", "Login", "Auth")
+            </p>
+
+        }
+    </div>
+</body>
+</html>
