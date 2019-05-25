@@ -1,0 +1,54 @@
+﻿@model Dip.Models.RegisterModel
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Registration</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+        <div>
+            @Html.ValidationSummary(true)
+
+            <div>
+                @Html.LabelFor(Model => Model.Name)
+                <div>
+                    @Html.EditorFor(Model => Model.Name)
+                    @Html.ValidationMessageFor(Model => Model.Name)
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(Model => Model.Login)
+                <div>
+                    @Html.EditorFor(Model => Model.Login)
+                    @Html.ValidationMessageFor(Model => Model.Login)
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(Model => Model.Password)
+                <div>
+                    @Html.EditorFor(Model => Model.Password)
+                    @Html.ValidationMessageFor(Model => Model.Password)
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(Model => Model.ConfirmPassword)
+                <div>
+                    @Html.EditorFor(Model => Model.ConfirmPassword)
+                    @Html.ValidationMessageFor(Model => Model.ConfirmPassword)
+                </div>
+            </div>
+            <input type="submit" value="Зарегестрироваться" class="btnblue"/>
+
+        </div>
+
+        }
+    </div>
+</body>
+</html>
