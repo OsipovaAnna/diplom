@@ -1,0 +1,182 @@
+@using ClassLibrary1.Models
+
+@model Dip.Models.JobsModel
+
+
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="page-header bg-success center-block">
+    <h1>Бухгалтерская компания Чайковской<br /><small>Добрый день, @User.Identity.Name!</small></h1>
+</div>
+
+<div class="content">
+    @foreach (var i in Model.Jobs)
+    {
+        if (i.FinishTime < DateTime.Now.AddDays(2) && i.FinishTime > DateTime.Now && i.Status == false)
+        {
+            <p class="red"> Для @i.CustomerName  задачу @i.TaskName завершить @i.FinishTime.ToLocalTime()</p>
+        }
+    }
+
+</div>
+
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#active" aria-controls="table" role="tab" data-toggle="tab">Активные задания</a></li>
+        <li role="presentation"><a href="#done" aria-controls="table" role="tab" data-toggle="tab">Завершенные задания</a></li>
+        <li role="presentation"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Добавить</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+
+
+
+        <div role="tabpanel" class="tab-pane" id="active">
+            <div class="table-responsive">
+                @using (Html.BeginForm("SaveActive", "Work", FormMethod.Post))
+                {
+                    <table class="table">
+                        <tr>
+                            <td>Клиенты</td>
+                            <td>Задачи</td>
+                            <td>Дедлайн</td>
+                            <td>Выполнено</td>
+                            <td>Заметки</td>
+                        </tr>
+
+                        @for (int i = 0, j = 0; j < Model.Jobs.Count; j++)
+                        {
+                            if (Model.Jobs[j].Status == false)
+                            {
+                                <tr>
+                                    <td>
+                                        <input id="Jobs[@i].EmployeeName" name="Jobs[@i].EmployeeName" type="hidden" value="@Model.Jobs[j].EmployeeName" />
+                                        <input id="Jobs[@i].Id" name="Jobs[@i].Id" type="hidden" value="@Model.Jobs[j].Id" />
+                                        <input id="Jobs[@i].StartTime" name="Jobs[@i].StartTime" type="hidden" value="@Model.Jobs[j].StartTime" />
+                                        <input id="Jobs[@i].CustomerName" name="Jobs[@i].CustomerName" type="text" value="@Model.Jobs[j].CustomerName" />
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].TaskName" name="Jobs[@i].TaskName" type="text" value="@Model.Jobs[j].TaskName" />
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].FinishTime" name="Jobs[@i].FinishTime" type="text" value="@Model.Jobs[j].FinishTime" />
+                                    </td>
+                                    <td>
+                                        <input data-val="true" data-val-required="Требуется поле Status." id="Jobs_[@i]__Status" name="Jobs[@i].Status" type="checkbox" value="true" /><input name="Jobs[0].Status" type="hidden" value="false" />
+
+
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].Description" name="Jobs[@i].Description" type="text" value="@Model.Jobs[j].Description" />
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+
+                    </table>
+                    <button type="submit" class="btn btnblue btn-default">Сохранить</button>
+                }
+
+            </div>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane" id="done">
+            <div class="table-responsive">
+                @using (Html.BeginForm("SaveDone", "Work", FormMethod.Post))
+                {
+                    <table class="table">
+                        <tr>
+                            <td>Клиенты</td>
+                            <td>Задачи</td>
+                            <td>Дедлайн</td>
+                            <td>Выполнено</td>
+                            <td>Заметки</td>
+                        </tr>
+
+                        @for (int i = 0, j = 0; j < Model.Jobs.Count; j++)
+                        {
+                            if (Model.Jobs[j].Status == true)
+                            {
+                                <tr>
+                                    <td>
+                                        <input id="Jobs[@i].EmployeeName" name="Jobs[@i].EmployeeName" type="hidden" value="@Model.Jobs[j].EmployeeName" />
+                                        <input id="Jobs[@i].Id" name="Jobs[@i].Id" type="hidden" value="@Model.Jobs[j].Id" />
+                                        <input id="Jobs[@i].StartTime" name="Jobs[@i].StartTime" type="hidden" value="@Model.Jobs[j].StartTime" />
+                                        <input id="Jobs[@i].CustomerName" name="Jobs[@i].CustomerName" type="text" value="@Model.Jobs[j].CustomerName" />
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].TaskName" name="Jobs[@i].TaskName" type="text" value="@Model.Jobs[j].TaskName" />
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].FinishTime" name="Jobs[@i].FinishTime" type="text" value="@Model.Jobs[j].FinishTime" />
+                                    </td>
+                                    <td>
+                                        <input checked="checked" data-val="true" data-val-required="Требуется поле Status." id="Jobs_[@i]__Status" name="Jobs[@i].Status" type="checkbox" value="true" /><input name="Jobs[0].Status" type="hidden" value="false" />
+
+                                    </td>
+                                    <td>
+                                        <input id="Jobs[@i].Description" name="Jobs[@i].Description" type="text" value="@Model.Jobs[j].Description" />
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+
+                    </table>
+                    <button type="submit" class="btn btnblue btn-default">Сохранить</button>
+                }
+
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="edit">
+            <br>
+            @using (Html.BeginForm("SaveNew", "Work", FormMethod.Post))
+            {
+                <div class="form-inline">
+                    @Html.HiddenFor(x => x.NewJob.EmployeeName)
+
+                    <div class="form-group">
+                        <p>Имя/название заказчика</p>
+                        @Html.EditorFor(x => x.NewJob.CustomerName)
+                    </div>
+                    <div class="form-group">
+                        <p>Задача</p>
+                        @Html.EditorFor(x => x.NewJob.TaskName)
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <p>Дата начала</p>
+                        <input type="date" class="form-control" name="NewJob.StartTime" required placeholder="dd/mm/yyyy">
+                    </div>
+                    <div class="form-group">
+                        <p>Дата окончания</p>
+                        <input type="date" class="form-control" name="NewJob.FinishTime" required placeholder="dd/mm/yyyy">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <p>Описание</p>
+                        @Html.EditorFor(x => x.NewJob.Description)
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btnblue btn-default">Сохранить новую задачу</button>
+                </div>
+            }
+
+        </div>
+
+        </div>
+
+    </div>
