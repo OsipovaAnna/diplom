@@ -1,0 +1,41 @@
+@model Dip.Models.AuthModel
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            @Html.ValidationSummary(true)
+
+            <div>
+                @Html.LabelFor(Model => Model.Login)
+                <div>
+                    @Html.EditorFor(Model => Model.Login)
+                    @Html.ValidationMessageFor(Model => Model.Login)
+                </div>
+            </div>
+            
+            <div>
+                @Html.LabelFor(Model => Model.Password)
+                <div>
+                    @Html.EditorFor(Model => Model.Password)
+                    @Html.ValidationMessageFor(Model => Model.Password)
+                </div>
+            </div>
+            
+            <input type="submit" value="Войти" class="btnblue"/>
+
+        </div>
+
+    }
+</body>
+</html>
